@@ -1,10 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <title>Novo Livro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-salvar {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-salvar:hover {
+            background-color: #45a049;
+        }
+
+        .btn-cancelar {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .btn-cancelar:hover {
+            background-color: #aaa;
+        }
+
+        .erro {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Novo Livro</h2>
+
+    <div id="erro" class="erro"></div>
+
+    <form id="formLivro">
+        <div class="form-group">
+            <label for="titulo">Título *</label>
+            <input type="text" id="titulo" placeholder="Digite o título do livro" required>
+        </div>
+
+        <div class="form-group">
+            <label for="autor">Autor *</label>
+            <input type="text" id="autor" placeholder="Digite o nome do autor" required>
+        </div>
+
+        <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input type="text" id="isbn" placeholder="Digite o ISBN (opcional)">
+        </div>
+
+        <div class="form-group">
+            <label for="ano">Ano de Publicação *</label>
+            <input type="number" id="ano" placeholder="2026" required>
+        </div>
+
+        <div class="botoes">
+            <button type="submit" class="btn-salvar">Salvar Livro</button>
+            <button type="button" class="btn-cancelar" onclick="window.location.href='/livros'">Cancelar</button>
+        </div>
+    </form>
+
+    <script>
+        const usuarioId = "[[${usuarioId}]]";
+        const anoAtual = new Date().getFullYear();
+        document.getElementById("ano").max = anoAtual;
+
+        document.getElementById("formLivro").addEventListener("submit", e => {
+            e.preventDefault();
+
+            const titulo = document.getElementById("titulo").value;
+            const autor = document.getElementById("autor").value;
+            const isbn = document.getElementById("isbn").value;
+            const ano = document.getElementById("ano").value;
+
+            if (!titulo || !autor || !ano) {
+                document.getElementById("erro").textContent = "Preencha os campos obrigatórios (*)";
+                return;
+            }
+
+            fetch("/api/livros", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Usuario-Id": usuarioId
+                },
+                body: JSON.stringify({
+                    titulo: titulo,
+                    autor: autor,
+                    isbn: isbn || null,
+                    anoPublicacao: parseInt(ano)
+                })
+            })
+                .then(res => {
+                    if (res.ok) {
+                        window.location.href = "/livros";
+                    } else {
+                        return res.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error("Erro:", err);
+                    document.getElementById("erro").textContent = "Erro ao salvar livro. Tente novamente.";
+                });
+        });
+    </script>
 </body>
+
 </html>
