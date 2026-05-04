@@ -13,38 +13,117 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SessionAuthenticationFilter sessionAuthenticationFilter() {
+
+        return new SessionAuthenticationFilter();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http)
+            throws Exception {
+
         http
-                .csrf(csrf -> csrf.disable())
-            .addFilterBefore(sessionAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth
-                        // Rotas públicas essenciais
-                        .requestMatchers("/", "/login", "/cadastro", "/logout").permitAll()
-                        .requestMatchers("/livros", "/livros/**").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
-                        
-                // APIs devem exigir autenticação (usa sessão criada por AuthController)
-                .requestMatchers("/api/**").authenticated()
-                        
-                        // Restante exige autenticação
-                        .anyRequest().authenticated()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true)
-                )
-                .sessionManagement(session -> session.maximumSessions(1));
+
+            // DESABILITA CSRF
+            .csrf(csrf -> csrf.disable())
+
+            // FILTRO DE SESSÃO
+            .addFilterBefore(
+                sessionAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter.class
+            )
+
+            // ROTAS
+            .authorizeHttpRequests(auth -> auth
+
+                // =========================
+                // ROTAS PÚBLICAS
+                // =========================
+                .requestMatchers(
+                    "/",
+                    "/login",
+                    "/cadastro",
+                    "/logout"
+                ).permitAll()
+
+                // =========================
+                // ARQUIVOS ESTÁTICOS
+                // =========================
+                .requestMatchers(
+
+                    // CSS GERAIS
+                    "/styles.css",
+                    "/script.js",
+
+                    // CADASTRO
+                    "/cadastro_styles.css",
+                    "/cadastro_script.js",
+
+                    // LOGIN
+                    "/login_styles.css",
+                    "/login_script.js",
+
+                    // LIVROS
+                    "/livros_styles.css",
+                    "/livros_script.js",
+
+                    // NOVO LIVRO
+                    "/livro-form_styles.css",
+                    "/livro-form_script.js",
+
+                    // EDITAR LIVRO
+                    "/livro-editar_styles.css",
+                    "/livro-editar_script.js",
+
+                    // IMAGENS
+                    "/images/**",
+
+                    // FAVICON
+                    "/favicon.ico"
+                ).permitAll()
+
+                // =========================
+                // ROTAS AUTENTICADAS
+                // =========================
+                .requestMatchers(
+                    "/livros/**",
+                    "/api/**"
+                ).authenticated()
+
+                // QUALQUER OUTRA ROTA
+                .anyRequest().authenticated()
+            )
+
+            // =========================
+            // LOGOUT
+            // =========================
+            .logout(logout -> logout
+
+                .logoutUrl("/logout")
+
+                .logoutSuccessUrl("/login")
+
+                .invalidateHttpSession(true)
+
+                .deleteCookies("JSESSIONID")
+
+                .clearAuthentication(true)
+
+                .permitAll()
+            )
+
+            // =========================
+            // SESSÃO
+            // =========================
+            .sessionManagement(session ->
+                session.maximumSessions(1)
+            );
 
         return http.build();
     }
-    
-        @Bean
-        public SessionAuthenticationFilter sessionAuthenticationFilter() {
-        return new SessionAuthenticationFilter();
-        }
 }

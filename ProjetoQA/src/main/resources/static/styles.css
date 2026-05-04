@@ -1,0 +1,548 @@
+/* ============================================
+   LOGIN*/
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Variáveis */
+:root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #b0b0b0;
+
+    --accent: #2c2c2c;
+    --accent-hover: #404040;
+    --accent-active: #1a1a1a;
+
+    --border: #e8e8e8;
+    --border-focus: #2c2c2c;
+
+    --input-bg: #f7f7f7;
+    --input-bg-hover: #f0f0f0;
+
+    --error-bg: #fef2f2;
+    --error-border: #fecaca;
+    --error-text: #dc2626;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.08);
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* ============================================
+   LAYOUT PRINCIPAL*/
+
+.page {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* ============================================
+   PAINEL ESQUERDO*/
+
+.left-panel {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f5f5f5;
+    padding: 60px;
+}
+
+.left-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-image {
+    width: 100%;
+    max-width: 520px;
+    max-height: 520px;
+    object-fit: contain;
+    display: block;
+    opacity: 0.65;
+}
+
+.left-overlay {
+    display: none;
+}
+
+/* ============================================
+   PAINEL DIREITO*/
+
+.right-panel {
+    width: 480px;
+    min-width: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: var(--bg);
+}
+
+.container {
+    width: 100%;
+    max-width: 360px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* ============================================
+   SUBTÍTULO*/
+
+.brand {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.brand h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    line-height: 1.1;
+}
+
+.brand p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    letter-spacing: 0.1px;
+    line-height: 1.2;
+}
+
+/* ============================================
+   FORM*/
+
+.card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+}
+
+.card-header {
+    margin-bottom: 0px;
+}
+
+.card-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.card-header span {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* ============================================
+   MENSAGEM DE ERRO*/
+
+.error {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    border-radius: var(--radius-sm);
+    color: var(--error-text);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: var(--transition);
+    pointer-events: none;
+}
+
+.error.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.error svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   GRUPO DE FORMULÁRIO*/
+
+.form-group {
+    margin-bottom: 4px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: 0.1px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper > svg:first-child {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--text-tertiary);
+    transition: var(--transition);
+    pointer-events: none;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px 12px 44px;
+    font-size: 15px;
+    font-family: inherit;
+    font-weight: 400;
+    color: var(--text-primary);
+    background: var(--input-bg);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input::placeholder {
+    color: var(--text-tertiary);
+}
+
+input:hover {
+    background: var(--input-bg-hover);
+}
+
+input:focus {
+    background: var(--surface);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(44, 44, 44, 0.06);
+}
+
+input:focus ~ svg:first-child {
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   BOTÃO OCULTAR SENHA*/
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--text-tertiary);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+.password-toggle:hover {
+    color: var(--text-secondary);
+    background: var(--input-bg-hover);
+}
+
+.password-toggle:active {
+    background: var(--border);
+}
+
+.password-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ============================================
+   BOTÃO*/
+
+.btn-primary {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #ffffff;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    letter-spacing: 0.1px;
+    margin-top: 8px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.btn-primary:active {
+    background: var(--accent-active);
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============================================
+   CARREGAMENTO*/
+
+.spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.btn-primary.loading .btn-text {
+    display: none;
+}
+
+.btn-primary.loading .spinner {
+    display: block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   FOOTER*/
+
+.footer {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.footer p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+}
+
+.footer a::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--accent);
+    transition: var(--transition);
+}
+
+.footer a:hover {
+    color: var(--accent-hover);
+}
+
+.footer a:hover::after {
+    width: 100%;
+}
+
+/* ============================================
+   ANIMAÇÃO DE ENTRADA*/
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVIDADE*/
+
+@media (max-width: 900px) {
+
+    .page {
+        flex-direction: column;
+    }
+
+    .left-panel {
+        display: none;
+    }
+
+    .right-panel {
+        width: 100%;
+        min-width: auto;
+        align-items: flex-start;
+        padding: 100px 20px 20px;
+    }
+
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+
+    html {
+        font-size: 15px;
+    }
+
+    .right-panel {
+        padding: 80px 16px 16px;
+    }
+
+    .brand {
+        margin-bottom: 24px;
+    }
+
+    .brand h1 {
+        font-size: 22px;
+    }
+
+    .brand p {
+        font-size: 13px;
+    }
+
+    .card {
+        padding: 24px;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+    }
+
+    .card-header {
+        margin-bottom: 20px;
+    }
+
+    .card-header h2 {
+        font-size: 18px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    input {
+        padding: 12px 12px 12px 42px;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        padding: 13px 20px;
+        font-size: 16px;
+        min-height: 50px;
+        margin-top: 6px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .right-panel {
+        padding: 60px 12px 12px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .brand {
+        margin-bottom: 20px;
+    }
+}
+
+/* ============================================
+   REDUÇÃO DE MOVIMENTO*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
