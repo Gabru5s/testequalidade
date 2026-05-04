@@ -1,66 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-        }
-        form {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        input {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-        }
-        .error {
-            color: red;
-            text-align: center;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Ex libris — Entrar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
+
 <body>
-<h2>Login</h2>
+    <!-- PAINEL ESQUERDA -->
+    <div class="page">
 
-<div id="error" class="error"></div>
+        <div class="left-panel">
+            <div class="left-content">
 
-<form method="post" action="/login">
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="senha" placeholder="Senha" required>
-    <button type="submit">Entrar</button>
-</form>
+                <img
+                    th:src="@{/images/logo.png}"
+                    alt="Ex Libris"
+                    class="left-image">
 
-<a href="/cadastro">Criar conta</a>
+            </div>
+        </div>
 
-<script>
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('error')) {
-        document.getElementById('error').textContent = 'Email ou senha inválidos';
-    }
-</script>
+        <!-- PAINEL DIREITA -->
+        <div class="right-panel">
+
+            <div class="container">
+
+                <!-- BRAND -->
+                <div class="brand">
+
+                    <h1>EX LIBRIS</h1>
+                    <p>Explore mundos entre as páginas</p>
+
+                </div>
+
+                <!-- HEADER -->
+                <div class="card">
+
+                    <div class="card-header">
+                        <h2>Bem-vindo de volta</h2>
+                        <span>Faça login para continuar</span>
+                    </div>
+
+                    <!-- ERROR -->
+                    <div id="error" class="error">
+
+                        <svg viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+
+                        <span>Email ou senha inválidos</span>
+
+                    </div>
+
+                    <!-- FORM -->
+                    <form method="post"
+                        th:action="@{/login}"
+                        id="loginForm">
+
+                        <!-- EMAIL -->
+                        <div class="form-group">
+
+                            <label for="email">Email</label>
+
+                            <div class="input-wrapper">
+
+                                <svg viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round">
+
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                    <polyline points="22,6 12,13 2,6" />
+                                </svg>
+
+                                <input type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="seu@email.com"
+                                    required
+                                    autocomplete="email"
+                                    inputmode="email">
+
+                            </div>
+
+                        </div>
+
+                        <!-- SENHA -->
+                        <div class="form-group">
+
+                            <label for="password">Senha</label>
+
+                            <div class="input-wrapper">
+
+                                <svg viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round">
+
+                                    <rect x="3"
+                                        y="11"
+                                        width="18"
+                                        height="11"
+                                        rx="2"
+                                        ry="2" />
+
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+
+                                <input type="password"
+                                    id="password"
+                                    name="senha"
+                                    placeholder="Digite sua senha"
+                                    required
+                                    autocomplete="current-password">
+
+                                <!-- VISUALIZAR -->
+                                <button type="button"
+                                    class="password-toggle"
+                                    id="togglePassword"
+                                    aria-label="Mostrar senha">
+
+                                    <!-- ICONE OLHO ON -->
+                                    <svg id="eyeIcon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round">
+
+                                        <path
+                                            d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+
+                                    <!-- ICONE OLHO OFF -->
+                                    <svg id="eyeOffIcon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        style="display:none">
+
+                                        <path
+                                            d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+
+                                        <line x1="1" y1="1" x2="23" y2="23" />
+                                    </svg>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <!-- BOTÃO-->
+                        <button type="submit"
+                            class="btn-primary"
+                            id="submitBtn">
+
+                            <span class="btn-text">Entrar</span>
+
+                            <div class="spinner"></div>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="footer">
+                    <p>
+                        Não tem uma conta?
+                        <a th:href="@{/cadastro}">
+                            Criar conta
+                        </a>
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script th:src="@{/script.js}"></script>
+
 </body>
+
 </html>
