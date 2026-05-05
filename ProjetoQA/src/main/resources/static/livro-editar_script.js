@@ -30,8 +30,16 @@ document.getElementById("formLivro").addEventListener("submit", async (e) => {
 
     const ano = document.getElementById("ano").value;
 
+    const anoAtual = new Date().getFullYear();
+
+
     if (!titulo || !autor || !ano) {
         mostrarErro("Preencha todos os campos obrigatórios.");
+        return;
+    }
+
+    if (ano > anoAtual) {
+        mostrarErro(`Ano de publicação inválido.`);
         return;
     }
 
@@ -42,7 +50,6 @@ document.getElementById("formLivro").addEventListener("submit", async (e) => {
 
             headers: {
                 "Content-Type": "application/json",
-                "X-Usuario-Id": usuarioId
             },
 
             body: JSON.stringify({

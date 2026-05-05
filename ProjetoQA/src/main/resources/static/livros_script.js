@@ -145,8 +145,7 @@ function mostrarVazio() {
                 Comece sua biblioteca pessoal adicionando o primeiro livro.
             </p>
 
-            <a href="/livros/novo"
-                class="btn btn-primary">
+            <a href="/livros/novo">
 
                 Adicionar primeiro livro
 
@@ -196,58 +195,58 @@ function carregarLivros() {
 
     })
 
-    .then(res => {
+        .then(res => {
 
-        if (res.status === 401) {
+            if (res.status === 401) {
 
-            window.location.href = "/login";
+                window.location.href = "/login";
 
-            return;
-        }
+                return;
+            }
 
-        if (!res.ok) {
-            throw new Error("Erro ao carregar livros");
-        }
+            if (!res.ok) {
+                throw new Error("Erro ao carregar livros");
+            }
 
-        return res.json();
-    })
+            return res.json();
+        })
 
-    .then(data => {
+        .then(data => {
 
-        if (!data) return;
+            if (!data) return;
 
-        console.log("Livros:", data);
+            console.log("Livros:", data);
 
-        const lista = document.getElementById("lista");
+            const lista = document.getElementById("lista");
 
-        lista.innerHTML = "";
+            lista.innerHTML = "";
 
-        if (data.length === 0) {
+            if (data.length === 0) {
 
-            mostrarVazio();
+                mostrarVazio();
 
-            return;
-        }
+                return;
+            }
 
-        document.getElementById("contador").textContent = data.length;
+            document.getElementById("contador").textContent = data.length;
 
-        data.forEach(livro => {
+            data.forEach(livro => {
 
-            lista.appendChild(
-                criarCardLivro(livro)
-            );
+                lista.appendChild(
+                    criarCardLivro(livro)
+                );
+
+            });
+
+        })
+
+        .catch(err => {
+
+            console.error(err);
+
+            mostrarErro();
 
         });
-
-    })
-
-    .catch(err => {
-
-        console.error(err);
-
-        mostrarErro();
-
-    });
 }
 
 // ============================================
@@ -273,29 +272,29 @@ function deletarLivro(id) {
 
     })
 
-    .then(res => {
+        .then(res => {
 
-        if (res.status === 401) {
+            if (res.status === 401) {
 
-            window.location.href = "/login";
+                window.location.href = "/login";
 
-            return;
-        }
+                return;
+            }
 
-        if (!res.ok) {
-            throw new Error("Erro ao deletar");
-        }
+            if (!res.ok) {
+                throw new Error("Erro ao deletar");
+            }
 
-        carregarLivros();
-    })
+            carregarLivros();
+        })
 
-    .catch(err => {
+        .catch(err => {
 
-        console.error(err);
+            console.error(err);
 
-        alert("Erro ao deletar livro.");
+            alert("Erro ao deletar livro.");
 
-    });
+        });
 }
 
 // ============================================

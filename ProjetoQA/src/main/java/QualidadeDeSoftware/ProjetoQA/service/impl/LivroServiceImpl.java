@@ -1,5 +1,10 @@
 package QualidadeDeSoftware.ProjetoQA.service.impl;
 
+import java.time.Year;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import QualidadeDeSoftware.ProjetoQA.dto.LivroCreateRequest;
 import QualidadeDeSoftware.ProjetoQA.dto.LivroResponse;
 import QualidadeDeSoftware.ProjetoQA.dto.LivroUpdateRequest;
@@ -8,10 +13,6 @@ import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
 import QualidadeDeSoftware.ProjetoQA.model.Livro;
 import QualidadeDeSoftware.ProjetoQA.repository.LivroRepository;
 import QualidadeDeSoftware.ProjetoQA.service.LivroService;
-import org.springframework.stereotype.Service;
-
-import java.time.Year;
-import java.util.List;
 
 @Service
 public class LivroServiceImpl implements LivroService {
@@ -38,11 +39,11 @@ public class LivroServiceImpl implements LivroService {
             throw new RegraNegocioException("ISBN é obrigatório");
         }
 
-        int anoAtual = java.time.Year.now().getValue();
+        int anoAtual = Year.now().getValue();
 
-if (request.anoPublicacao() <= 0 || request.anoPublicacao() < 1900 || request.anoPublicacao() > anoAtual) {
-    throw new RegraNegocioException("Ano de publicação inválido.");
-}
+        if (request.anoPublicacao() == null || request.anoPublicacao() <= 0 || request.anoPublicacao() > anoAtual) {
+            throw new RegraNegocioException("Ano de publicação inválido.");
+        }
 
         // REGRA DE NEGÓCIO (ISBN duplicado)
         if (livroRepository.existsByIsbnAndUsuarioId(request.isbn(), usuarioId)) {
@@ -58,8 +59,7 @@ if (request.anoPublicacao() <= 0 || request.anoPublicacao() < 1900 || request.an
                 request.genero(),
                 request.resumo(),
                 false,
-                usuarioId
-        );
+                usuarioId);
 
         return toResponse(livroRepository.save(livro));
     }
@@ -70,7 +70,7 @@ if (request.anoPublicacao() <= 0 || request.anoPublicacao() < 1900 || request.an
         Livro livro = livroRepository.findByIdAndUsuarioId(livroId, usuarioId)
                 .orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado."));
 
-        // VALIDAÇÕES 
+        // VALIDAÇÕES
         if (request.titulo() == null || request.titulo().trim().isEmpty()) {
             throw new RegraNegocioException("Título é obrigatório");
         }
@@ -132,7 +132,6 @@ if (request.anoPublicacao() <= 0 || request.anoPublicacao() < 1900 || request.an
                 livro.getAnoPublicacao(),
                 livro.getGenero(),
                 livro.getResumo(),
-                livro.getLido()
-        );
+                livro.getLido());
     }
 }

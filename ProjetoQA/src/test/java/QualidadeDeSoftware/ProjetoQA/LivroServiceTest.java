@@ -1,5 +1,21 @@
 package QualidadeDeSoftware.ProjetoQA;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import QualidadeDeSoftware.ProjetoQA.dto.LivroCreateRequest;
 import QualidadeDeSoftware.ProjetoQA.dto.LivroResponse;
 import QualidadeDeSoftware.ProjetoQA.dto.LivroUpdateRequest;
@@ -8,377 +24,321 @@ import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
 import QualidadeDeSoftware.ProjetoQA.repository.LivroRepository;
 import QualidadeDeSoftware.ProjetoQA.service.LivroService;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.jupiter.params.provider.CsvSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class LivroServiceTest {
 
-    @Autowired
-    private LivroService service;
+        @Autowired
+        private LivroService service;
 
-    @Autowired
-    private LivroRepository repository;
+        @Autowired
+        private LivroRepository repository;
 
-    @BeforeEach
-    void limparBanco() {
-        repository.deleteAll();
-    }
+        @BeforeEach
+        void limparBanco() {
+                repository.deleteAll();
+        }
 
-/*Testa a criação de um livro com os dados corretos e verifica 
-se o livro é salvo corretamente e se os campos retornados estao certo */
-    @Test
-    void deveCriarLivro() {
-        LivroCreateRequest request = new LivroCreateRequest(
-                "Clean Code",
-                "Robert Martin",
-                "111",
-                2008,
-                "Tecnologia",
-                "Livro bom"
-        );
+        /*
+         * Testa a criação de um livro com os dados corretos e verifica
+         * se o livro é salvo corretamente e se os campos retornados estao certo
+         */
+        @Test
+        void deveCriarLivro() {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                "Clean Code",
+                                "Robert Martin",
+                                "111",
+                                2008,
+                                "Tecnologia",
+                                "Livro bom");
 
-        LivroResponse response = service.criar("1", request);
+                LivroResponse response = service.criar("1", request);
 
-        assertNotNull(response.id());
-        assertEquals("Clean Code", response.titulo());
-        assertFalse(response.lido());
-    }
+                assertNotNull(response.id());
+                assertEquals("Clean Code", response.titulo());
+                assertFalse(response.lido());
+        }
 
+        /*
+         * teste que verifica se o sistema nao permite cadastrar 2 livros com o mesmo
+         * ISBN para o mesmo usuario e tem que lançar a exceção de regra de negocio
+         */
+        @ParameterizedTest
+        @ValueSource(strings = { "111", "222", "ABC123", "ISBN-999" })
+        void naoDevePermitirIsbnDuplicadoParaMesmoUsuario(String isbn) {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                "Livro Teste",
+                                "Autor",
+                                isbn,
+                                2020,
+                                "Categoria",
+                                "");
 
-/*teste que verifica se o sistema nao permite cadastrar 2 livros com o mesmo
-ISBN para o mesmo usuario e tem que lançar a exceção de regra de negocio */
-    @ParameterizedTest
-    @ValueSource(strings = {"111", "222", "ABC123", "ISBN-999"})
-    void naoDevePermitirIsbnDuplicadoParaMesmoUsuario(String isbn) {
-        LivroCreateRequest request = new LivroCreateRequest(
-                "Livro Teste",
-                "Autor",
-                isbn,
-                2020,
-                "Categoria",
-                ""
-        );
+                service.criar("user1", request);
 
-        service.criar("user1", request);
+                assertThrows(RegraNegocioException.class, () -> service.criar("user1", request));
+        }
 
-        assertThrows(RegraNegocioException.class, () ->
-                service.criar("user1", request)
-        );
-    }
-// Testa se o sistema impede a criação de livros com título vazio ou inválido.
-    @ParameterizedTest
-    @ValueSource(strings = {"", " ", "   "})
-    void naoDeveCriarLivroComTituloInvalido(String titulo) {
-        LivroCreateRequest request = new LivroCreateRequest(
-                titulo,
-                "Autor",
-                "999",
-                2020,
-                "Categoria",
-                ""
-        );
+        // Testa se o sistema impede a criação de livros com título vazio ou inválido.
+        @ParameterizedTest
+        @ValueSource(strings = { "", " ", "   " })
+        void naoDeveCriarLivroComTituloInvalido(String titulo) {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                titulo,
+                                "Autor",
+                                "999",
+                                2020,
+                                "Categoria",
+                                "");
 
-        assertThrows(RegraNegocioException.class, () ->
-                service.criar("1", request)
-        );
-    }
+                assertThrows(RegraNegocioException.class, () -> service.criar("1", request));
+        }
 
-    @ParameterizedTest
-    @CsvSource({
-            "'', 'Autor'",
-            "'Livro', ''",
-            "'', ''"
-    })
+        @ParameterizedTest
+        @CsvSource({
+                        "'', 'Autor'",
+                        "'Livro', ''",
+                        "'', ''"
+        })
 
-    /*  verifica múltiplos cenários de dados inválidos, 
-    como título ou autor vazios. Deve lançar exceção de regra de negócio*/
-    
-    void naoDeveCriarLivroComDadosInvalidos(String titulo, String autor) {
-        LivroCreateRequest request = new LivroCreateRequest(
-                titulo,
-                autor,
-                "888",
-                2020,
-                "Categoria",
-                ""
-        );
+        /*
+         * verifica múltiplos cenários de dados inválidos,
+         * como título ou autor vazios. Deve lançar exceção de regra de negócio
+         */
 
-        assertThrows(RegraNegocioException.class, () ->
-                service.criar("1", request)
-        );
-    }
-    /*valida anos de publicação invalidos para ver se o sistema aceita */
-    @ParameterizedTest
-    @ValueSource(ints = {0, -1, 1800})
-    void naoDeveCriarLivroComAnoInvalido(int ano) {
-        LivroCreateRequest request = new LivroCreateRequest(
-                "Livro",
-                "Autor",
-                "777" + ano, // evita duplicação
-                ano,
-                "Categoria",
-                ""
-        );
+        void naoDeveCriarLivroComDadosInvalidos(String titulo, String autor) {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                titulo,
+                                autor,
+                                "888",
+                                2020,
+                                "Categoria",
+                                "");
 
-        assertThrows(RegraNegocioException.class, () ->
-                service.criar("1", request)
-        );
-    }
+                assertThrows(RegraNegocioException.class, () -> service.criar("1", request));
+        }
 
-    
-    // TESTES DE LISTAGEM
+        /* valida anos de publicação invalidos para ver se o sistema aceita */
+        @ParameterizedTest
+        @ValueSource(ints = { 0, -1 })
+        void naoDeveCriarLivroComAnoInvalido(int ano) {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                "Livro",
+                                "Autor",
+                                "777" + ano, // evita duplicação
+                                ano,
+                                "Categoria",
+                                "");
 
-    //garante que os livros criados estão sendo listados
-    @Test
-    void deveListarLivrosDoUsuario() {
-        service.criar("77",
-                new LivroCreateRequest("A", "AA", "1", 2020, "", ""));
+                assertThrows(RegraNegocioException.class, () -> service.criar("1", request));
+        }
 
-        service.criar("77",
-                new LivroCreateRequest("B", "BB", "2", 2021, "", ""));
+        // TESTES DE LISTAGEM
 
-        List<LivroResponse> lista = service.listarPorUsuario("77");
+        // garante que os livros criados estão sendo listados
+        @Test
+        void deveListarLivrosDoUsuario() {
+                service.criar("77",
+                                new LivroCreateRequest("A", "AA", "1", 2020, "", ""));
 
-        assertTrue(lista.size() >= 2);
-    }
+                service.criar("77",
+                                new LivroCreateRequest("B", "BB", "2", 2021, "", ""));
 
+                List<LivroResponse> lista = service.listarPorUsuario("77");
 
-    //TESTES DE ATUALIZAÇÃO
+                assertTrue(lista.size() >= 2);
+        }
 
-    //verifica se os dados que foram alterados estão corretos após a atualização
-    @Test
-    void deveAtualizarLivro() {
-        LivroResponse criado = service.criar("50",
-                new LivroCreateRequest("Velho", "Autor", "300", 2010, "", ""));
+        // TESTES DE ATUALIZAÇÃO
 
-        LivroUpdateRequest update = new LivroUpdateRequest(
-                "Novo Titulo",
-                "Novo Autor",
-                "300",
-                2024,
-                "Drama",
-                "Atualizado",
-                true
-        );
+        // verifica se os dados que foram alterados estão corretos após a atualização
+        @Test
+        void deveAtualizarLivro() {
+                LivroResponse criado = service.criar("50",
+                                new LivroCreateRequest("Velho", "Autor", "300", 2010, "", ""));
 
-        LivroResponse atualizado =
-                service.atualizar("50", criado.id(), update);
+                LivroUpdateRequest update = new LivroUpdateRequest(
+                                "Novo Titulo",
+                                "Novo Autor",
+                                "300",
+                                2024,
+                                "Drama",
+                                "Atualizado",
+                                true);
 
-        assertEquals("Novo Titulo", atualizado.titulo());
-        assertTrue(atualizado.lido());
-    }
+                LivroResponse atualizado = service.atualizar("50", criado.id(), update);
 
-    @Test
-    void deveAtualizarLidoQuandoInformado() {
-        LivroResponse criado = service.criar("user1",
-                new LivroCreateRequest("Livro", "Autor", "123", 2020, "", "")
-        );
+                assertEquals("Novo Titulo", atualizado.titulo());
+                assertTrue(atualizado.lido());
+        }
 
-        LivroUpdateRequest update = new LivroUpdateRequest(
-                "Livro", "Autor", "123", 2020, "", "", true
-        );
+        @Test
+        void deveAtualizarLidoQuandoInformado() {
+                LivroResponse criado = service.criar("user1",
+                                new LivroCreateRequest("Livro", "Autor", "123", 2020, "", ""));
 
-        LivroResponse atualizado =
-                service.atualizar("user1", criado.id(), update);
+                LivroUpdateRequest update = new LivroUpdateRequest(
+                                "Livro", "Autor", "123", 2020, "", "", true);
 
-        assertTrue(atualizado.lido());
-    }
+                LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
 
-    @Test
-    void naoDeveAlterarLidoQuandoForNull() {
-        LivroResponse criado = service.criar("user1",
-                new LivroCreateRequest("Livro", "Autor", "1234", 2020, "", "")
-        );
+                assertTrue(atualizado.lido());
+        }
 
-        LivroUpdateRequest update = new LivroUpdateRequest(
-                "Livro", "Autor", "1234", 2020, "", "", null
-        );
+        @Test
+        void naoDeveAlterarLidoQuandoForNull() {
+                LivroResponse criado = service.criar("user1",
+                                new LivroCreateRequest("Livro", "Autor", "1234", 2020, "", ""));
 
-        LivroResponse atualizado =
-                service.atualizar("user1", criado.id(), update);
+                LivroUpdateRequest update = new LivroUpdateRequest(
+                                "Livro", "Autor", "1234", 2020, "", "", null);
 
-        assertFalse(atualizado.lido());
-    }
+                LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
 
+                assertFalse(atualizado.lido());
+        }
 
-    // TESTES DE REMOÇÃO
-    
-// verifica se o livro deletado realmente não aparece mais na listagem
+        // TESTES DE REMOÇÃO
 
-    @Test
-    void deveRemoverLivro() {
-        LivroResponse criado = service.criar("88",
-                new LivroCreateRequest("Temp", "Autor", "700", 2020, "", ""));
+        // verifica se o livro deletado realmente não aparece mais na listagem
 
-        service.remover("88", criado.id());
+        @Test
+        void deveRemoverLivro() {
+                LivroResponse criado = service.criar("88",
+                                new LivroCreateRequest("Temp", "Autor", "700", 2020, "", ""));
 
-        List<LivroResponse> lista = service.listarPorUsuario("88");
+                service.remover("88", criado.id());
 
-        assertTrue(lista.stream().noneMatch(l -> l.id().equals(criado.id())));
-    }
+                List<LivroResponse> lista = service.listarPorUsuario("88");
 
+                assertTrue(lista.stream().noneMatch(l -> l.id().equals(criado.id())));
+        }
 
-    //  CAIXA BRANCA (EXCEÇÕES)
-    
+        // CAIXA BRANCA (EXCEÇÕES)
 
-    @Test
-    void deveLancarExcecaoAoBuscarLivroInexistente() {
-        assertThrows(LivroNaoEncontradoException.class, () ->
-                service.buscarPorId("user1", "id-invalido")
-        );
-    }
+        @Test
+        void deveLancarExcecaoAoBuscarLivroInexistente() {
+                assertThrows(LivroNaoEncontradoException.class, () -> service.buscarPorId("user1", "id-invalido"));
+        }
 
-    @Test
-    void deveLancarExcecaoAoRemoverLivroInexistente() {
-        assertThrows(LivroNaoEncontradoException.class, () ->
-                service.remover("user1", "id-invalido")
-        );
-    }
+        @Test
+        void deveLancarExcecaoAoRemoverLivroInexistente() {
+                assertThrows(LivroNaoEncontradoException.class, () -> service.remover("user1", "id-invalido"));
+        }
 
-    @Test
-    void deveLancarExcecaoAoAtualizarLivroInexistente() {
-        LivroUpdateRequest request = new LivroUpdateRequest(
-                "Novo", "Autor", "123", 2020, "", "", true
-        );
+        @Test
+        void deveLancarExcecaoAoAtualizarLivroInexistente() {
+                LivroUpdateRequest request = new LivroUpdateRequest(
+                                "Novo", "Autor", "123", 2020, "", "", true);
 
-        assertThrows(LivroNaoEncontradoException.class, () ->
-                service.atualizar("user1", "id-invalido", request)
-        );
-    }
+                assertThrows(LivroNaoEncontradoException.class,
+                                () -> service.atualizar("user1", "id-invalido", request));
+        }
 
-    
-    //  ISOLAMENTO ENTRE USUÁRIOS
-    
+        // ISOLAMENTO ENTRE USUÁRIOS
 
-    @Test
-    void usuarioNaoDeveAcessarLivroDeOutroUsuario() {
-        LivroResponse criado = service.criar("user1",
-                new LivroCreateRequest("Livro", "Autor", "9999", 2020, "", "")
-        );
+        @Test
+        void usuarioNaoDeveAcessarLivroDeOutroUsuario() {
+                LivroResponse criado = service.criar("user1",
+                                new LivroCreateRequest("Livro", "Autor", "9999", 2020, "", ""));
 
-        assertThrows(LivroNaoEncontradoException.class, () ->
-                service.buscarPorId("user2", criado.id())
-        );
-    }
- 
-        
-    // CAIXA PRETA
+                assertThrows(LivroNaoEncontradoException.class, () -> service.buscarPorId("user2", criado.id()));
+        }
 
+        // CAIXA PRETA
 
-    @Test
-    void caixaPretaDeveCriarLivroComDadosValidos() {
-        LivroCreateRequest request = new LivroCreateRequest(
-                "Dom Casmurro",
-                "Machado de Assis",
-                "ISBN-CP-001",
-                2000,
-                "Romance",
-                "Clássico"
-        );
+        @Test
+        void caixaPretaDeveCriarLivroComDadosValidos() {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                "Dom Casmurro",
+                                "Machado de Assis",
+                                "ISBN-CP-001",
+                                2000,
+                                "Romance",
+                                "Clássico");
 
-        LivroResponse response = service.criar("user1", request);
+                LivroResponse response = service.criar("user1", request);
 
-        assertNotNull(response.id());
-        assertEquals("Dom Casmurro", response.titulo());
-        assertEquals("Machado de Assis", response.autor());
-        assertEquals("ISBN-CP-001", response.isbn());
-        assertFalse(response.lido());
-    }
+                assertNotNull(response.id());
+                assertEquals("Dom Casmurro", response.titulo());
+                assertEquals("Machado de Assis", response.autor());
+                assertEquals("ISBN-CP-001", response.isbn());
+                assertFalse(response.lido());
+        }
 
-    @Test
-    void caixaPretaNaoDevePermitirIsbnDuplicadoParaMesmoUsuario() {
-        service.criar("user1",
-                new LivroCreateRequest("Livro 1", "Autor", "ISBN-CP-002", 2020, "", ""));
-
-        assertThrows(RegraNegocioException.class, () ->
+        @Test
+        void caixaPretaNaoDevePermitirIsbnDuplicadoParaMesmoUsuario() {
                 service.criar("user1",
-                        new LivroCreateRequest("Livro 2", "Autor", "ISBN-CP-002", 2021, "", ""))
-        );
-    }
+                                new LivroCreateRequest("Livro 1", "Autor", "ISBN-CP-002", 2020, "", ""));
 
-    @Test
-    void caixaPretaDevePermitirMesmoIsbnParaUsuariosDiferentes() {
-        LivroCreateRequest request = new LivroCreateRequest(
-                "Livro",
-                "Autor",
-                "ISBN-CP-003",
-                2020,
-                "",
-                ""
-        );
+                assertThrows(RegraNegocioException.class, () -> service.criar("user1",
+                                new LivroCreateRequest("Livro 2", "Autor", "ISBN-CP-002", 2021, "", "")));
+        }
 
-        service.criar("user1", request);
+        @Test
+        void caixaPretaDevePermitirMesmoIsbnParaUsuariosDiferentes() {
+                LivroCreateRequest request = new LivroCreateRequest(
+                                "Livro",
+                                "Autor",
+                                "ISBN-CP-003",
+                                2020,
+                                "",
+                                "");
 
-        assertDoesNotThrow(() ->
-                service.criar("user2", request)
-        );
-    }
+                service.criar("user1", request);
 
-    @Test
-    void caixaPretaDeveListarApenasLivrosDoUsuario() {
-        service.criar("user1",
-                new LivroCreateRequest("Livro A", "Autor", "ISBN-CP-004", 2020, "", ""));
+                assertDoesNotThrow(() -> service.criar("user2", request));
+        }
 
-        service.criar("user2",
-                new LivroCreateRequest("Livro B", "Autor", "ISBN-CP-005", 2020, "", ""));
+        @Test
+        void caixaPretaDeveListarApenasLivrosDoUsuario() {
+                service.criar("user1",
+                                new LivroCreateRequest("Livro A", "Autor", "ISBN-CP-004", 2020, "", ""));
 
-        List<LivroResponse> livros = service.listarPorUsuario("user1");
+                service.criar("user2",
+                                new LivroCreateRequest("Livro B", "Autor", "ISBN-CP-005", 2020, "", ""));
 
-        assertEquals(1, livros.size());
-        assertEquals("Livro A", livros.get(0).titulo());
-    }
+                List<LivroResponse> livros = service.listarPorUsuario("user1");
 
-    @Test
-    void caixaPretaUsuarioNaoDeveAcessarLivroDeOutroUsuario() {
-        LivroResponse livro = service.criar("user1",
-                new LivroCreateRequest("Privado", "Autor", "ISBN-CP-006", 2020, "", ""));
+                assertEquals(1, livros.size());
+                assertEquals("Livro A", livros.get(0).titulo());
+        }
 
-        assertThrows(LivroNaoEncontradoException.class, () ->
-                service.buscarPorId("user2", livro.id())
-        );
-    }
+        @Test
+        void caixaPretaUsuarioNaoDeveAcessarLivroDeOutroUsuario() {
+                LivroResponse livro = service.criar("user1",
+                                new LivroCreateRequest("Privado", "Autor", "ISBN-CP-006", 2020, "", ""));
 
-    @Test
-    void caixaPretaDeveAtualizarLivroCorretamente() {
-        LivroResponse criado = service.criar("user1",
-                new LivroCreateRequest("Antigo", "Autor", "ISBN-CP-007", 2020, "", ""));
+                assertThrows(LivroNaoEncontradoException.class, () -> service.buscarPorId("user2", livro.id()));
+        }
 
-        LivroUpdateRequest update = new LivroUpdateRequest(
-                "Novo",
-                "Novo Autor",
-                "ISBN-CP-007",
-                2021,
-                "Drama",
-                "Atualizado",
-                true
-        );
+        @Test
+        void caixaPretaDeveAtualizarLivroCorretamente() {
+                LivroResponse criado = service.criar("user1",
+                                new LivroCreateRequest("Antigo", "Autor", "ISBN-CP-007", 2020, "", ""));
 
-        LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
+                LivroUpdateRequest update = new LivroUpdateRequest(
+                                "Novo",
+                                "Novo Autor",
+                                "ISBN-CP-007",
+                                2021,
+                                "Drama",
+                                "Atualizado",
+                                true);
 
-        assertEquals("Novo", atualizado.titulo());
-        assertTrue(atualizado.lido());
-    }
+                LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
 
-    @Test
-    void caixaPretaDeveRemoverLivro() {
-        LivroResponse criado = service.criar("user1",
-                new LivroCreateRequest("Remover", "Autor", "ISBN-CP-008", 2020, "", ""));
+                assertEquals("Novo", atualizado.titulo());
+                assertTrue(atualizado.lido());
+        }
 
-        service.remover("user1", criado.id());
+        @Test
+        void caixaPretaDeveRemoverLivro() {
+                LivroResponse criado = service.criar("user1",
+                                new LivroCreateRequest("Remover", "Autor", "ISBN-CP-008", 2020, "", ""));
 
-        assertThrows(LivroNaoEncontradoException.class, () ->
-                service.buscarPorId("user1", criado.id())
-        );
-    }
+                service.remover("user1", criado.id());
+
+                assertThrows(LivroNaoEncontradoException.class, () -> service.buscarPorId("user1", criado.id()));
+        }
 }
