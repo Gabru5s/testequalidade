@@ -5,8 +5,5 @@ public record LivroResponse(
         String titulo,
         String autor,
         String isbn,
-        Integer anoPublicacao,
-        String genero,
-        String resumo,
-        Boolean lido
+        Integer anoPublicacao
 ) {}

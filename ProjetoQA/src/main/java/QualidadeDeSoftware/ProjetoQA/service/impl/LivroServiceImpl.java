@@ -56,9 +56,6 @@ public class LivroServiceImpl implements LivroService {
                 request.autor(),
                 request.isbn(),
                 request.anoPublicacao(),
-                request.genero(),
-                request.resumo(),
-                false,
                 usuarioId);
 
         return toResponse(livroRepository.save(livro));
@@ -92,12 +89,6 @@ public class LivroServiceImpl implements LivroService {
         livro.setAutor(request.autor());
         livro.setIsbn(request.isbn());
         livro.setAnoPublicacao(request.anoPublicacao());
-        livro.setGenero(request.genero());
-        livro.setResumo(request.resumo());
-
-        if (request.lido() != null) {
-            livro.setLido(request.lido());
-        }
 
         return toResponse(livroRepository.save(livro));
     }
@@ -129,9 +120,7 @@ public class LivroServiceImpl implements LivroService {
                 livro.getTitulo(),
                 livro.getAutor(),
                 livro.getIsbn(),
-                livro.getAnoPublicacao(),
-                livro.getGenero(),
-                livro.getResumo(),
-                livro.getLido());
+                livro.getAnoPublicacao());
+
     }
 }

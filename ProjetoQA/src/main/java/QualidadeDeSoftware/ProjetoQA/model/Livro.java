@@ -16,25 +16,18 @@ public class Livro {
     private String autor;
     private String isbn;
     private Integer anoPublicacao;
-    private String genero;
-    private String resumo;
-
-    private Boolean lido;
     private String usuarioId;
-
+    
     public Livro() {
     }
 
     public Livro(String id, String titulo, String autor, String isbn, Integer anoPublicacao,
-            String genero, String resumo, Boolean lido, String usuarioId) {
+            String usuarioId) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
         this.anoPublicacao = anoPublicacao;
-        this.genero = genero;
-        this.resumo = resumo;
-        this.lido = lido;
         this.usuarioId = usuarioId;
     }
 
@@ -76,30 +69,6 @@ public class Livro {
 
     public void setAnoPublicacao(Integer anoPublicacao) {
         this.anoPublicacao = anoPublicacao;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public String getResumo() {
-        return resumo;
-    }
-
-    public void setResumo(String resumo) {
-        this.resumo = resumo;
-    }
-
-    public Boolean getLido() {
-        return lido;
-    }
-
-    public void setLido(Boolean lido) {
-        this.lido = lido;
     }
 
     public String getUsuarioId() {

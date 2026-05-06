@@ -7,8 +7,5 @@ public record LivroUpdateRequest(
         @NotBlank String titulo,
         @NotBlank String autor,
         @NotBlank String isbn,
-        @NotNull Integer anoPublicacao,
-        String genero,
-        String resumo,
-        Boolean lido
+        @NotNull Integer anoPublicacao
 ) {}
