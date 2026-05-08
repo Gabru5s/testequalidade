@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class PageController {
 
+    private static final String USUARIO_ID = "usuarioId";
+    private static final String REDIRECT_LIVROS = "redirect:/livros";
+    private static final String REDIRECT_LOGIN = "redirect:/login";
+
     private final LivroService livroService;
 
     public PageController(LivroService livroService) {
@@ -19,61 +23,61 @@ public class PageController {
 
     @GetMapping("/")
     public String index(HttpSession session) {
-        if (session.getAttribute("usuarioId") != null) {
-            return "redirect:/livros";
+        if (session.getAttribute(USUARIO_ID) != null) {
+            return REDIRECT_LIVROS;
         }
-        return "redirect:/login";
+        return REDIRECT_LOGIN;
     }
 
     @GetMapping("/login")
     public String login(HttpSession session) {
-        if (session.getAttribute("usuarioId") != null) {
-            return "redirect:/livros";
+        if (session.getAttribute(USUARIO_ID) != null) {
+            return REDIRECT_LIVROS;
         }
         return "login";
     }
 
     @GetMapping("/cadastro")
     public String cadastro(HttpSession session) {
-        if (session.getAttribute("usuarioId") != null) {
-            return "redirect:/livros";
+        if (session.getAttribute(USUARIO_ID) != null) {
+            return REDIRECT_LIVROS;
         }
         return "cadastro";
     }
 
     @GetMapping("/livros")
     public String livros(HttpSession session, Model model) {
-        String usuarioId = (String) session.getAttribute("usuarioId");
+        String usuarioId = (String) session.getAttribute(USUARIO_ID);
         if (usuarioId == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
-        model.addAttribute("usuarioId", usuarioId);
+        model.addAttribute(USUARIO_ID, usuarioId);
         model.addAttribute("livros", livroService.listarPorUsuario(usuarioId));
         return "livros";
     }
 
     @GetMapping("/livros/novo")
     public String novoLivro(HttpSession session, Model model) {
-        String usuarioId = (String) session.getAttribute("usuarioId");
+        String usuarioId = (String) session.getAttribute(USUARIO_ID);
         if (usuarioId == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
-        model.addAttribute("usuarioId", usuarioId);
+        model.addAttribute(USUARIO_ID, usuarioId);
         return "livro-form";
     }
 
     @GetMapping("/livros/editar/{id}")
     public String editarLivro(@PathVariable String id, HttpSession session, Model model) {
-        String usuarioId = (String) session.getAttribute("usuarioId");
+        String usuarioId = (String) session.getAttribute(USUARIO_ID);
         if (usuarioId == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
         try {
-            model.addAttribute("usuarioId", usuarioId);
+            model.addAttribute(USUARIO_ID, usuarioId);
             model.addAttribute("livro", livroService.buscarPorId(usuarioId, id));
             return "livro-editar";
         } catch (Exception e) {
-            return "redirect:/livros";
+            return REDIRECT_LIVROS;
         }
     }
 }

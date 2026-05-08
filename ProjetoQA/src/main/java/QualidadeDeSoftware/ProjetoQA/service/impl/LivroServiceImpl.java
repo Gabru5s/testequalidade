@@ -17,6 +17,8 @@ import QualidadeDeSoftware.ProjetoQA.service.LivroService;
 @Service
 public class LivroServiceImpl implements LivroService {
 
+    private static final String LIVRO_NAO_ENCONTRADO = "Livro não encontrado.";
+
     private final LivroRepository livroRepository;
 
     public LivroServiceImpl(LivroRepository livroRepository) {
@@ -65,7 +67,7 @@ public class LivroServiceImpl implements LivroService {
     public LivroResponse atualizar(String usuarioId, String livroId, LivroUpdateRequest request) {
 
         Livro livro = livroRepository.findByIdAndUsuarioId(livroId, usuarioId)
-                .orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado."));
+                .orElseThrow(() -> new LivroNaoEncontradoException(LIVRO_NAO_ENCONTRADO));
 
         // VALIDAÇÕES
         if (request.titulo() == null || request.titulo().trim().isEmpty()) {
@@ -96,7 +98,7 @@ public class LivroServiceImpl implements LivroService {
     @Override
     public LivroResponse buscarPorId(String usuarioId, String livroId) {
         Livro livro = livroRepository.findByIdAndUsuarioId(livroId, usuarioId)
-                .orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado."));
+                .orElseThrow(() -> new LivroNaoEncontradoException(LIVRO_NAO_ENCONTRADO));
         return toResponse(livro);
     }
 
@@ -110,7 +112,7 @@ public class LivroServiceImpl implements LivroService {
     @Override
     public void remover(String usuarioId, String livroId) {
         Livro livro = livroRepository.findByIdAndUsuarioId(livroId, usuarioId)
-                .orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado."));
+                .orElseThrow(() -> new LivroNaoEncontradoException(LIVRO_NAO_ENCONTRADO));
         livroRepository.delete(livro);
     }
 
@@ -121,6 +123,5 @@ public class LivroServiceImpl implements LivroService {
                 livro.getAutor(),
                 livro.getIsbn(),
                 livro.getAnoPublicacao());
-
     }
 }

@@ -13,19 +13,16 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SessionAuthenticationFilter sessionAuthenticationFilter() {
-
         return new SessionAuthenticationFilter();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
 
         http
 
@@ -56,34 +53,25 @@ public class SecurityConfig {
                 // =========================
                 .requestMatchers(
 
-                    // CSS GERAIS
                     "/styles.css",
                     "/script.js",
 
-                    // CADASTRO
                     "/cadastro_styles.css",
                     "/cadastro_script.js",
 
-                    // LOGIN
                     "/login_styles.css",
                     "/login_script.js",
 
-                    // LIVROS
                     "/livros_styles.css",
                     "/livros_script.js",
 
-                    // NOVO LIVRO
                     "/livro-form_styles.css",
                     "/livro-form_script.js",
 
-                    // EDITAR LIVRO
                     "/livro-editar_styles.css",
                     "/livro-editar_script.js",
 
-                    // IMAGENS
                     "/images/**",
-
-                    // FAVICON
                     "/favicon.ico"
                 ).permitAll()
 
@@ -103,17 +91,11 @@ public class SecurityConfig {
             // LOGOUT
             // =========================
             .logout(logout -> logout
-
                 .logoutUrl("/logout")
-
                 .logoutSuccessUrl("/login")
-
                 .invalidateHttpSession(true)
-
                 .deleteCookies("JSESSIONID")
-
                 .clearAuthentication(true)
-
                 .permitAll()
             )
 

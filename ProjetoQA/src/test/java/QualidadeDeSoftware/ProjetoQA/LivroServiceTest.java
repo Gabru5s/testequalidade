@@ -4,6 +4,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -149,9 +150,7 @@ class LivroServiceTest {
                                 "Novo Titulo",
                                 "Novo Autor",
                                 "300",
-                                2024
-
-                );
+                                2024);
 
                 LivroResponse atualizado = service.atualizar("50", criado.id(), update);
 
@@ -168,6 +167,7 @@ class LivroServiceTest {
 
                 LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
 
+                assertEquals("Livro", atualizado.titulo());
         }
 
         @Test
@@ -180,6 +180,7 @@ class LivroServiceTest {
 
                 LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
 
+                assertEquals("Livro", atualizado.titulo());
         }
 
         // TESTES DE REMOÇÃO
@@ -237,8 +238,7 @@ class LivroServiceTest {
                                 "Dom Casmurro",
                                 "Machado de Assis",
                                 "ISBN-CP-001",
-                                2000
-                                );
+                                2000);
 
                 LivroResponse response = service.criar("user1", request);
 
@@ -263,8 +263,7 @@ class LivroServiceTest {
                                 "Livro",
                                 "Autor",
                                 "ISBN-CP-003",
-                                2020
-                               );
+                                2020);
 
                 service.criar("user1", request);
 
@@ -302,8 +301,7 @@ class LivroServiceTest {
                                 "Novo",
                                 "Novo Autor",
                                 "ISBN-CP-007",
-                                2021
-                               );
+                                2021);
 
                 LivroResponse atualizado = service.atualizar("user1", criado.id(), update);
 
