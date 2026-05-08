@@ -1,8 +1,9 @@
-package QualidadeDeSoftware.ProjetoQA.controller;
+package qualidadedesoftware.projetoqa.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import QualidadeDeSoftware.ProjetoQA.service.UsuarioService;
+import qualidadedesoftware.projetoqa.service.UsuarioService;
+
 
 @RestController
 public class UsuarioController {

@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA.exception;
+package qualidadedesoftware.projetoqa.exception;
 
 public class LivroNaoEncontradoException extends RuntimeException {
     public LivroNaoEncontradoException(String message) {

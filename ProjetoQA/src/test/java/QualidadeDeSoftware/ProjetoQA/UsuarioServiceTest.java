@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA;
+package qualidadedesoftware.projetoqa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LoginRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioResponse;
-import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
-import QualidadeDeSoftware.ProjetoQA.repository.UsuarioRepository;
-import QualidadeDeSoftware.ProjetoQA.service.UsuarioService;
+import qualidadedesoftware.projetoqa.dto.LoginRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioCreateRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioResponse;
+import qualidadedesoftware.projetoqa.exception.RegraNegocioException;
+import qualidadedesoftware.projetoqa.repository.UsuarioRepository;
+import qualidadedesoftware.projetoqa.service.UsuarioService;
+
 
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)

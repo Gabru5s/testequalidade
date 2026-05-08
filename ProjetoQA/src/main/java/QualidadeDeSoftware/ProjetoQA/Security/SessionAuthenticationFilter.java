@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA.Security;
+package qualidadedesoftware.projetoqa.Security;
 
 import java.io.IOException;
 import java.util.List;

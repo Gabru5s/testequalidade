@@ -1,10 +1,12 @@
-package QualidadeDeSoftware.ProjetoQA.service;
+package qualidadedesoftware.projetoqa.service;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LivroCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroResponse;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroUpdateRequest;
+
 
 import java.util.List;
+
+import qualidadedesoftware.projetoqa.dto.LivroCreateRequest;
+import qualidadedesoftware.projetoqa.dto.LivroResponse;
+import qualidadedesoftware.projetoqa.dto.LivroUpdateRequest;
 
 public interface LivroService {
     LivroResponse criar(String usuarioId, LivroCreateRequest request);

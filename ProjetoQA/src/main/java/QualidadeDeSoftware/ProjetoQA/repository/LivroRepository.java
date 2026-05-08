@@ -1,10 +1,11 @@
-package QualidadeDeSoftware.ProjetoQA.repository;
-
-import QualidadeDeSoftware.ProjetoQA.model.Livro;
-import org.springframework.data.mongodb.repository.MongoRepository;
+package qualidadedesoftware.projetoqa.repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import qualidadedesoftware.projetoqa.model.Livro;
 
 public interface LivroRepository extends MongoRepository<Livro, String> {
     List<Livro> findByUsuarioId(String usuarioId);

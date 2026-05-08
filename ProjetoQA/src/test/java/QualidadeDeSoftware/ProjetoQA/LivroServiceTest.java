@@ -1,10 +1,9 @@
-package QualidadeDeSoftware.ProjetoQA;
+package qualidadedesoftware.projetoqa;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,13 +15,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LivroCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroResponse;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroUpdateRequest;
-import QualidadeDeSoftware.ProjetoQA.exception.LivroNaoEncontradoException;
-import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
-import QualidadeDeSoftware.ProjetoQA.repository.LivroRepository;
-import QualidadeDeSoftware.ProjetoQA.service.LivroService;
+import qualidadedesoftware.projetoqa.dto.LivroCreateRequest;
+import qualidadedesoftware.projetoqa.dto.LivroResponse;
+import qualidadedesoftware.projetoqa.dto.LivroUpdateRequest;
+import qualidadedesoftware.projetoqa.exception.LivroNaoEncontradoException;
+import qualidadedesoftware.projetoqa.exception.RegraNegocioException;
+import qualidadedesoftware.projetoqa.repository.LivroRepository;
+import qualidadedesoftware.projetoqa.service.LivroService;
+
+
 
 @SpringBootTest
 class LivroServiceTest {

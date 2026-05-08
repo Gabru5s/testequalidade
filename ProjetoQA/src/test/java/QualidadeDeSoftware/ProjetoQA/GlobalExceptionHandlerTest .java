@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA;
+package qualidadedesoftware.projetoqa;
 
 import java.util.Map;
 
@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import QualidadeDeSoftware.ProjetoQA.exception.GlobalExceptionHandler;
-import QualidadeDeSoftware.ProjetoQA.exception.LivroNaoEncontradoException;
-import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
+import qualidadedesoftware.projetoqa.exception.GlobalExceptionHandler;
+import qualidadedesoftware.projetoqa.exception.LivroNaoEncontradoException;
+import qualidadedesoftware.projetoqa.exception.RegraNegocioException;
+
+
 
 class GlobalExceptionHandlerTest {
 

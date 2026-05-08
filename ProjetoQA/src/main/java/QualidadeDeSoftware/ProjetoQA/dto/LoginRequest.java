@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA.dto;
+package qualidadedesoftware.projetoqa.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

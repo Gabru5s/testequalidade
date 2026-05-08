@@ -1,18 +1,19 @@
-package QualidadeDeSoftware.ProjetoQA.service.impl;
+package qualidadedesoftware.projetoqa.service.impl;
 
 import java.time.Year;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LivroCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroResponse;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroUpdateRequest;
-import QualidadeDeSoftware.ProjetoQA.exception.LivroNaoEncontradoException;
-import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
-import QualidadeDeSoftware.ProjetoQA.model.Livro;
-import QualidadeDeSoftware.ProjetoQA.repository.LivroRepository;
-import QualidadeDeSoftware.ProjetoQA.service.LivroService;
+import qualidadedesoftware.projetoqa.dto.LivroCreateRequest;
+import qualidadedesoftware.projetoqa.dto.LivroResponse;
+import qualidadedesoftware.projetoqa.dto.LivroUpdateRequest;
+import qualidadedesoftware.projetoqa.exception.LivroNaoEncontradoException;
+import qualidadedesoftware.projetoqa.exception.RegraNegocioException;
+import qualidadedesoftware.projetoqa.model.Livro;
+import qualidadedesoftware.projetoqa.repository.LivroRepository;
+import qualidadedesoftware.projetoqa.service.LivroService;
+
 
 @Service
 public class LivroServiceImpl implements LivroService {

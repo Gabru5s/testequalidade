@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA;
+package qualidadedesoftware.projetoqa;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import QualidadeDeSoftware.ProjetoQA.repository.LivroRepository;
+import qualidadedesoftware.projetoqa.repository.LivroRepository;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc

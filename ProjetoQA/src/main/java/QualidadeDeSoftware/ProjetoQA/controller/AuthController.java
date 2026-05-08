@@ -1,14 +1,14 @@
-package QualidadeDeSoftware.ProjetoQA.controller;
+package qualidadedesoftware.projetoqa.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LoginRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioResponse;
-import QualidadeDeSoftware.ProjetoQA.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import qualidadedesoftware.projetoqa.dto.LoginRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioCreateRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioResponse;
+import qualidadedesoftware.projetoqa.service.UsuarioService;
 
 @Controller
 public class AuthController {

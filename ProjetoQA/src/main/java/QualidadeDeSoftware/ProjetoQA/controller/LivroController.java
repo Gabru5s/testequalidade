@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA.controller;
+package qualidadedesoftware.projetoqa.controller;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LivroCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroResponse;
-import QualidadeDeSoftware.ProjetoQA.dto.LivroUpdateRequest;
-import QualidadeDeSoftware.ProjetoQA.service.LivroService;
 import jakarta.validation.Valid;
+import qualidadedesoftware.projetoqa.dto.LivroCreateRequest;
+import qualidadedesoftware.projetoqa.dto.LivroResponse;
+import qualidadedesoftware.projetoqa.dto.LivroUpdateRequest;
+import qualidadedesoftware.projetoqa.service.LivroService;
 
 @RestController
 @RequestMapping("/api/livros")

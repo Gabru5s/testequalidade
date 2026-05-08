@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA.dto;
+package qualidadedesoftware.projetoqa.dto;
 
 public record LivroResponse(
         String id,

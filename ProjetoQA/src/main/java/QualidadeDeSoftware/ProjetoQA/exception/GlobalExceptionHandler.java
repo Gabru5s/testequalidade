@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.ProjetoQA.exception;
+package qualidadedesoftware.projetoqa.exception;
 
 import java.time.Instant;
 import java.util.Map;

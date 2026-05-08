@@ -1,8 +1,8 @@
-package QualidadeDeSoftware.ProjetoQA.service;
+package qualidadedesoftware.projetoqa.service;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LoginRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioResponse;
+import qualidadedesoftware.projetoqa.dto.LoginRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioCreateRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioResponse;
 
 public interface UsuarioService {
     UsuarioResponse cadastrar(UsuarioCreateRequest request);

@@ -1,14 +1,16 @@
-package QualidadeDeSoftware.ProjetoQA.service.impl;
+package qualidadedesoftware.projetoqa.service.impl;
 
-import QualidadeDeSoftware.ProjetoQA.dto.LoginRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioCreateRequest;
-import QualidadeDeSoftware.ProjetoQA.dto.UsuarioResponse;
-import QualidadeDeSoftware.ProjetoQA.exception.RegraNegocioException;
-import QualidadeDeSoftware.ProjetoQA.model.Usuario;
-import QualidadeDeSoftware.ProjetoQA.repository.UsuarioRepository;
-import QualidadeDeSoftware.ProjetoQA.service.UsuarioService;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import qualidadedesoftware.projetoqa.dto.LoginRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioCreateRequest;
+import qualidadedesoftware.projetoqa.dto.UsuarioResponse;
+import qualidadedesoftware.projetoqa.exception.RegraNegocioException;
+import qualidadedesoftware.projetoqa.model.Usuario;
+import qualidadedesoftware.projetoqa.repository.UsuarioRepository;
+import qualidadedesoftware.projetoqa.service.UsuarioService;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
