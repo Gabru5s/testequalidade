@@ -1,4 +1,4 @@
-package qualidadedesoftware.projetoqa;
+package QualidadeDeSoftware.projetoqa;
 
 import java.util.Map;
 

@@ -6,6 +6,11 @@ const livroId = document.getElementById("id").value;
 
 const erroEl = document.getElementById("erro");
 
+// CSRF — lê o token da meta tag injetada pelo Thymeleaf
+function getCsrfToken() {
+    return document.querySelector('meta[name="_csrf"]')?.content ?? null;
+}
+
 function mostrarErro(mensagem) {
     erroEl.style.display = "block";
     erroEl.textContent = mensagem;
@@ -32,7 +37,6 @@ document.getElementById("formLivro").addEventListener("submit", async (e) => {
 
     const anoAtual = new Date().getFullYear();
 
-
     if (!titulo || !autor || !ano) {
         mostrarErro("Preencha todos os campos obrigatórios.");
         return;
@@ -46,10 +50,14 @@ document.getElementById("formLivro").addEventListener("submit", async (e) => {
     try {
 
         const response = await fetch(`/api/livros/${livroId}`, {
+
             method: "PUT",
+
+            credentials: "same-origin",
 
             headers: {
                 "Content-Type": "application/json",
+                "X-CSRF-TOKEN": getCsrfToken()  // CSRF obrigatório em PUT
             },
 
             body: JSON.stringify({

@@ -1,4 +1,4 @@
-package qualidadedesoftware.projetoqa;
+package QualidadeDeSoftware.projetoqa;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,8 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,7 +46,7 @@ class LivroControllerTest {
     void deveBloquearAutenticacaoSomenteViaHeader() throws Exception {
 
         mockMvc.perform(get("/api/livros")
-                .header("X-Usuario-Id", "user-header"))
+                        .header("X-Usuario-Id", "user-header"))
                 .andExpect(status().isForbidden());
     }
 
@@ -61,9 +63,10 @@ class LivroControllerTest {
                 """;
 
         mockMvc.perform(post("/api/livros")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk());
     }
 
@@ -80,12 +83,13 @@ class LivroControllerTest {
                 """;
 
         mockMvc.perform(post("/api/livros")
+                .with(csrf())
                 .sessionAttr("usuarioId", "user1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
         mockMvc.perform(get("/api/livros")
-                .sessionAttr("usuarioId", "user1"))
+                        .sessionAttr("usuarioId", "user1"))
                 .andExpect(status().isOk());
     }
 
@@ -102,9 +106,10 @@ class LivroControllerTest {
                 """;
 
         String response = mockMvc.perform(post("/api/livros")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -112,7 +117,7 @@ class LivroControllerTest {
         String id = response.split("\"id\":\"")[1].split("\"")[0];
 
         mockMvc.perform(get("/api/livros/" + id)
-                .sessionAttr("usuarioId", "user1"))
+                        .sessionAttr("usuarioId", "user1"))
                 .andExpect(status().isOk());
     }
 
@@ -129,9 +134,10 @@ class LivroControllerTest {
                 """;
 
         String response = mockMvc.perform(post("/api/livros")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(createJson))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -148,9 +154,10 @@ class LivroControllerTest {
                 """;
 
         mockMvc.perform(put("/api/livros/" + id)
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(updateJson))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateJson))
                 .andExpect(status().isOk());
     }
 
@@ -167,9 +174,10 @@ class LivroControllerTest {
                 """;
 
         String response = mockMvc.perform(post("/api/livros")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -177,7 +185,8 @@ class LivroControllerTest {
         String id = response.split("\"id\":\"")[1].split("\"")[0];
 
         mockMvc.perform(delete("/api/livros/" + id)
-                .sessionAttr("usuarioId", "user1"))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1"))
                 .andExpect(status().isOk());
     }
 
@@ -194,9 +203,10 @@ class LivroControllerTest {
                 """;
 
         mockMvc.perform(post("/api/livros")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isBadRequest());
     }
 
@@ -213,9 +223,10 @@ class LivroControllerTest {
                 """;
 
         mockMvc.perform(put("/api/livros/id-invalido")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isBadRequest());
     }
 
@@ -223,7 +234,7 @@ class LivroControllerTest {
     void deveRetornarNotFoundQuandoLivroNaoExiste() throws Exception {
 
         mockMvc.perform(get("/api/livros/id-invalido")
-                .sessionAttr("usuarioId", "user1"))
+                        .sessionAttr("usuarioId", "user1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -231,7 +242,8 @@ class LivroControllerTest {
     void deveRetornarNotFoundAoRemoverLivroInexistente() throws Exception {
 
         mockMvc.perform(delete("/api/livros/id-invalido")
-                .sessionAttr("usuarioId", "user1"))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -248,9 +260,10 @@ class LivroControllerTest {
                 """;
 
         String response = mockMvc.perform(post("/api/livros")
-                .sessionAttr("usuarioId", "user1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .with(csrf())
+                        .sessionAttr("usuarioId", "user1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -258,7 +271,7 @@ class LivroControllerTest {
         String id = response.split("\"id\":\"")[1].split("\"")[0];
 
         mockMvc.perform(get("/api/livros/" + id)
-                .sessionAttr("usuarioId", "user2"))
+                        .sessionAttr("usuarioId", "user2"))
                 .andExpect(status().isNotFound());
     }
 }

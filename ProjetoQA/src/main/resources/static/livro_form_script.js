@@ -16,6 +16,11 @@ inputAno.max = anoAtual;
 
 const formLivro = document.getElementById("formLivro");
 
+// CSRF — lê o token da meta tag injetada pelo Thymeleaf
+function getCsrfToken() {
+    return document.querySelector('meta[name="_csrf"]')?.content ?? null;
+}
+
 // EVENTO DE SUBMIT
 
 formLivro.addEventListener("submit", async (e) => {
@@ -79,9 +84,12 @@ formLivro.addEventListener("submit", async (e) => {
 
             method: "POST",
 
+            credentials: "same-origin",
+
             headers: {
                 "Content-Type": "application/json",
-                "X-Usuario-Id": usuarioId
+                "X-Usuario-Id": usuarioId,
+                "X-CSRF-TOKEN": getCsrfToken()  // CSRF obrigatório em POST
             },
 
             body: JSON.stringify({

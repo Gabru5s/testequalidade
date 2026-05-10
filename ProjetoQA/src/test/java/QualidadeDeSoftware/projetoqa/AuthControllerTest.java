@@ -1,4 +1,4 @@
-package qualidadedesoftware.projetoqa;
+package QualidadeDeSoftware.projetoqa;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,8 +35,9 @@ class AuthControllerTest {
     void deveRedirecionarParaLoginQuandoCredenciaisInvalidas() throws Exception {
 
         mockMvc.perform(post("/login")
-                .param("email", "inexistente@email.com")
-                .param("senha", "123456"))
+                        .with(csrf())
+                        .param("email", "inexistente@email.com")
+                        .param("senha", "123456"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"));
     }
@@ -43,9 +46,10 @@ class AuthControllerTest {
     void deveCadastrarUsuarioComSucesso() throws Exception {
 
         mockMvc.perform(post("/cadastro")
-                .param("nome", "Carlos")
-                .param("email", "carlos@email.com")
-                .param("senha", "123456"))
+                        .with(csrf())
+                        .param("nome", "Carlos")
+                        .param("email", "carlos@email.com")
+                        .param("senha", "123456"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/livros"));
     }
@@ -54,14 +58,16 @@ class AuthControllerTest {
     void deveRedirecionarCadastroQuandoEmailJaExiste() throws Exception {
 
         mockMvc.perform(post("/cadastro")
+                .with(csrf())
                 .param("nome", "Carlos")
                 .param("email", "duplicado@email.com")
                 .param("senha", "123456"));
 
         mockMvc.perform(post("/cadastro")
-                .param("nome", "Carlos 2")
-                .param("email", "duplicado@email.com")
-                .param("senha", "654321"))
+                        .with(csrf())
+                        .param("nome", "Carlos 2")
+                        .param("email", "duplicado@email.com")
+                        .param("senha", "654321"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/cadastro?error"));
     }
@@ -70,13 +76,15 @@ class AuthControllerTest {
     void deveFazerLoginComSucesso() throws Exception {
 
         mockMvc.perform(post("/cadastro")
+                .with(csrf())
                 .param("nome", "Usuario")
                 .param("email", "usuario@email.com")
                 .param("senha", "123456"));
 
         mockMvc.perform(post("/login")
-                .param("email", "usuario@email.com")
-                .param("senha", "123456"))
+                        .with(csrf())
+                        .param("email", "usuario@email.com")
+                        .param("senha", "123456"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/livros"));
     }
@@ -84,7 +92,8 @@ class AuthControllerTest {
     @Test
     void deveFazerLogoutComSucesso() throws Exception {
 
-        mockMvc.perform(post("/logout"))
+        mockMvc.perform(post("/logout")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
     }

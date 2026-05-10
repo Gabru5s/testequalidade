@@ -1,7 +1,8 @@
-package qualidadedesoftware.projetoqa;
+package QualidadeDeSoftware.projetoqa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
+import qualidadedesoftware.projetoqa.ProjetoQaApplication;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestProjetoQaApplication {

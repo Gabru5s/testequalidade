@@ -1,4 +1,4 @@
-package qualidadedesoftware.projetoqa;
+package QualidadeDeSoftware.projetoqa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,14 +31,14 @@ class UsuarioServiceTest {
 
     @BeforeEach
     void limparBanco() {
-        repository.deleteAll(); // Garante isolamento entre testes
+        repository.deleteAll();
     }
 
     @Test
     void deveCadastrarUsuarioComSucesso() {
         UsuarioCreateRequest request = new UsuarioCreateRequest("Carlos", "carlos@teste.com", "senha123");
         UsuarioResponse response = service.cadastrar(request);
-        
+
         assertNotNull(response.id());
         assertEquals("carlos@teste.com", response.email());
     }
@@ -53,14 +53,36 @@ class UsuarioServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-        "inexistente@email.com, senha123", // Email não cadastrado
-        "valido@email.com, senhaErrada"     // Senha não confere
+            "inexistente@email.com, senha123",
+            "valido@email.com, senhaErrada"
     })
     void deveLancarExcecaoEmCredenciaisInvalidas(String email, String senha) {
         service.cadastrar(new UsuarioCreateRequest("Valido", "valido@email.com", "senha123"));
-        
-        assertThrows(RegraNegocioException.class, () -> 
-            service.autenticar(new LoginRequest(email, senha))
+
+        assertThrows(RegraNegocioException.class, () ->
+                service.autenticar(new LoginRequest(email, senha))
+        );
+    }
+
+    // ============================================
+    // COBERTURA — buscarPorEmail
+    // ============================================
+
+    @Test
+    void deveBuscarUsuarioPorEmail() {
+        service.cadastrar(new UsuarioCreateRequest("Ana", "ana@teste.com", "senha123"));
+
+        UsuarioResponse response = service.buscarPorEmail("ana@teste.com");
+
+        assertNotNull(response.id());
+        assertEquals("ana@teste.com", response.email());
+        assertEquals("Ana", response.nome());
+    }
+
+    @Test
+    void deveLancarExcecaoAoBuscarEmailInexistente() {
+        assertThrows(RegraNegocioException.class, () ->
+                service.buscarPorEmail("naoexiste@teste.com")
         );
     }
 }

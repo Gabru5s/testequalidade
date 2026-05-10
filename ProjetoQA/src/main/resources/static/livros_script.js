@@ -5,6 +5,13 @@
 console.log("usuarioId:", usuarioId);
 
 // ============================================
+// CSRF — lê o cookie XSRF-TOKEN do Spring
+// ============================================
+
+function getCsrfToken() {
+    return document.querySelector('meta[name="_csrf"]')?.content ?? null;
+}
+// ============================================
 // CRIAR CARD
 // ============================================
 
@@ -182,6 +189,7 @@ function mostrarErro() {
 
 function carregarLivros() {
 
+    // GET não precisa de CSRF, mas mantemos credentials e o header de usuário
     fetch("/api/livros", {
 
         method: "GET",
@@ -267,7 +275,8 @@ function deletarLivro(id) {
 
         headers: {
             "Content-Type": "application/json",
-            "X-Usuario-Id": usuarioId
+            "X-Usuario-Id": usuarioId,
+            "X-CSRF-TOKEN": getCsrfToken()  // CSRF obrigatório em DELETE
         }
 
     })
