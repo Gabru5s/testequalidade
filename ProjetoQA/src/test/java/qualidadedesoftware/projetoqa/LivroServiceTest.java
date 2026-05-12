@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import org.springframework.context.annotation.Import;
 import qualidadedesoftware.projetoqa.dto.LivroCreateRequest;
 import qualidadedesoftware.projetoqa.dto.LivroResponse;
 import qualidadedesoftware.projetoqa.dto.LivroUpdateRequest;
@@ -25,6 +26,7 @@ import qualidadedesoftware.projetoqa.service.LivroService;
 
 
 @SpringBootTest
+@Import(TestcontainersConfiguration.class)
 class LivroServiceTest {
 
         @Autowired
