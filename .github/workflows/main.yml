@@ -39,7 +39,7 @@ jobs:
         run: ./mvnw test jacoco:report -q
 
       - name: Verify coverage threshold
-        run: ./mvnw jacoco:check -q
+        run: /mvnw test -Pcoverage-check -q
 
       - name: Upload coverage to SonarQube
         env:
