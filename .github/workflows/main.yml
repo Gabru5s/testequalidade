@@ -17,6 +17,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      checks: write
 
     steps:
       - name: Checkout code
@@ -39,7 +40,7 @@ jobs:
         run: ./mvnw test jacoco:report -q
 
       - name: Verify coverage threshold
-        run: /mvnw test -Pcoverage-check -q
+        run: ./mvnw test -Pcoverage-check -q
 
       - name: Upload coverage to SonarQube
         env:
