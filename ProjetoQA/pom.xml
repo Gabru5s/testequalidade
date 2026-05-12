@@ -210,11 +210,9 @@
 								</goals>
 								<configuration>
 									<rules>
+										<!-- Profile: BUNDLE no lugar de PACKAGE -->
 										<rule>
-											<element>PACKAGE</element>
-											<excludes>
-												<exclude>*Test</exclude>
-											</excludes>
+											<element>BUNDLE</element>  <!-- era PACKAGE -->
 											<limits>
 												<limit>
 													<counter>LINE</counter>
