@@ -35,12 +35,9 @@ jobs:
 
       - name: Build project
         run: ./mvnw clean compile -q
-
-      - name: Run tests with coverage
-        run: ./mvnw test jacoco:report -q
-
-      - name: Verify coverage threshold
-        run: ./mvnw test -Pcoverage-check -q
+        
+      - name: Run tests with coverage and verify threshold
+        run: ./mvnw test jacoco:report -Pcoverage-check -q
 
       - name: Upload coverage to SonarQube
         env:
