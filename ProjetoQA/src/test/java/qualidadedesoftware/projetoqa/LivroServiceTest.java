@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.projetoqa;
+package qualidadedesoftware.projetoqa;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package QualidadeDeSoftware.projetoqa;
+package qualidadedesoftware.projetoqa;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
