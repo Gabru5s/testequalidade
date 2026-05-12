@@ -10,6 +10,10 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ProjetoQA
+
     permissions:
       contents: read
       pull-requests: write
@@ -53,7 +57,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: Test Results
-          path: target/surefire-reports/*.xml
+          path: ProjetoQA/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: false
 
@@ -62,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: target/site/jacoco/
+          path: ProjetoQA/target/site/jacoco/
 
       - name: Comment PR with coverage
         if: github.event_name == 'pull_request'
@@ -75,7 +79,7 @@ jobs:
 
             try {
               const jacocoReport = fs.readFileSync(
-                'target/site/jacoco/index.html',
+                'ProjetoQA/target/site/jacoco/index.html',
                 'utf8'
               );
 
