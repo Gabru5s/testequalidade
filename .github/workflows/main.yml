@@ -18,6 +18,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Grant execute permission to Maven Wrapper
+        run: chmod +x mvnw
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -29,7 +32,7 @@ jobs:
         run: ./mvnw clean compile -q
 
       - name: Run tests with coverage
-        run: ./mvnw clean test jacoco:report -q
+        run: ./mvnw test jacoco:report -q
 
       - name: Verify coverage threshold
         run: ./mvnw jacoco:check -q
@@ -50,7 +53,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: Test Results
-          path: target/surefire-reports/TEST-*.xml
+          path: target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: false
 
