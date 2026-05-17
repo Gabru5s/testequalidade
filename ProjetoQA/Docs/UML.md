@@ -1,5 +1,5 @@
-# DIAGRAMAS UML DE SEQUÊNCIA
-**REQUISITOS FUNCIONAIS**
+## DIAGRAMAS UML DE SEQUÊNCIA
+#REQUISITOS FUNCIONAIS
 
 **RF01/RF02/RF03**
 ```mermaid
@@ -186,4 +186,82 @@ sequenceDiagram
         S-->>C: void sucess
         C-->>User: 200/204 No Content
     end
+```
+<br>
+
+#REQUISITOS NÃO FUNCIONAIS
+**RNF01/RNF03/RNF05**
+
+```mermaid
+sequenceDiagram
+    participant Dev as Desenvolvedor
+    participant GH as GitHub Actions
+    participant J as JaCoCo
+    participant S as SonarQube
+    
+    Dev->>GH: Push do Código
+    Note over GH: Inicia Build Automático (RNF05)
+    
+    GH->>J: Executa Maven Verify
+    J-->>GH: Relatório de Cobertura > 80% (RNF01)
+    
+    GH->>S: Envia dados para Análise Estática
+    Note over S: Verifica Bugs e Dívida Técnica (RNF03)
+    S-->>GH: Quality Gate: PASS
+    
+    GH-->>Dev: Pipeline finalizada com sucesso
+```
+<br>
+
+**RNF02/RNF07**
+```mermaid
+sequenceDiagram
+    participant T as Testes de Integração
+    participant TC as Testcontainers (MongoDB)
+    participant VCR as VCR (Cassette)
+    participant API as API Externa
+    
+    T->>TC: Levanta Container Docker (RNF02)
+    Note over T, TC: Teste de persistência sem Mocks
+    
+    T->>VCR: Chama serviço externo
+    alt Primeira execução (Record)
+        VCR->>API: Requisição Real
+        API-->>VCR: Resposta
+        VCR->>VCR: Grava arquivo YAML (RNF07)
+    else Execuções seguintes (Replay)
+        VCR->>VCR: Lê arquivo YAML gravado
+    end
+    VCR-->>T: Retorna dados para o teste
+```
+<br>
+
+**RNF04**
+```mermaid
+sequenceDiagram
+    participant S as UsuarioService
+    participant Sec as Spring Security (BCrypt)
+    participant DB as MongoDB
+    
+    S->>Sec: encode(senha_plana)
+    Note right of Sec: Aplica Algoritmo de Hash (RNF04)
+    Sec-->>S: senha_criptografada
+    S->>DB: save(usuario_com_hash)
+```
+<br>
+
+**RNF06/RNF08**
+```mermaid
+sequenceDiagram
+    participant U as Usuário
+    participant UI as Interface (CSS/Thymeleaf)
+    participant Session as HttpSession
+    
+    U->>UI: Acessa via Dispositivo Mobile
+    Note over UI: Ajusta layout (RNF06 - Responsivo)
+    
+    U->>UI: Navega entre abas
+    UI->>Session: Verifica usuarioId (RNF08)
+    Session-->>UI: Retorna dados da sessão ativa
+    UI-->>U: Página carregada com usuário logado
 ```
