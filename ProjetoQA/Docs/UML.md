@@ -30,7 +30,7 @@ sequenceDiagram
         S-->>C: UsuarioResponse
         C-->>User: Salva sessão e redireciona para /livros
     end
-    ```
+```
 <br>
 
 **RF04**
@@ -57,7 +57,7 @@ sequenceDiagram
         Note over C: Sucesso! Ver fluxo de sessão (RF05)
         C-->>User: Redireciona para /livros
     end
-    ```
+```
 <br>
 
 **RF05**
@@ -73,7 +73,7 @@ sequenceDiagram
     C->>Session: setAttribute("usuarioId", userRes.id)
     C->>Session: setAttribute("usuarioEmail", userRes.email)
     C-->>C: Redirect to /livros
-    ```
+ ```
 <br>
 
 **RF06**
@@ -87,8 +87,8 @@ sequenceDiagram
     C->>Session: invalidate()
     Note right of Session: Sessão é destruída
     C-->>User: Redirect to /login
-    ```
-  <br>
+```
+<br>
 
 **RF07/RF0/RF09/RF10**
 ```mermaid
@@ -129,7 +129,7 @@ sequenceDiagram
             end
         end
     end
-    ```
+ ```
 <br>
 
 **RF11**
@@ -152,7 +152,7 @@ sequenceDiagram
     R-->>S: List<LivroEntity>
     S-->>C: List<LivroResponseDTO>
     C-->>User: 200 OK com Lista JSON
-    ```
+```
 <br>
 
 **RF12/RF13**
@@ -186,4 +186,4 @@ sequenceDiagram
         S-->>C: void sucess
         C-->>User: 200/204 No Content
     end
-    ```
+```
