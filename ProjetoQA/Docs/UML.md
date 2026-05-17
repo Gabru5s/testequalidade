@@ -1,7 +1,8 @@
 # DIAGRAMAS UML DE SEQUÊNCIA
 **REQUISITOS FUNCIONAIS**
 
-RF01/RF02/RF03
+**RF01/RF02/RF03**
+```mermaid
 sequenceDiagram
     participant User as Ator/Navegador
     participant C as AuthController
