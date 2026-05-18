@@ -12,6 +12,8 @@ public class Usuario {
     private String nome;
     private String email;
     private String senhaHash;
+    private String cep;
+private String endereco;
 
     public Usuario() {
     }
@@ -54,4 +56,19 @@ public class Usuario {
     public void setSenhaHash(String senhaHash) {
         this.senhaHash = senhaHash;
     }
+    public String getCep() {
+    return cep;
+}
+
+public void setCep(String cep) {
+    this.cep = cep;
+}
+
+public String getEndereco() {
+    return endereco;
+}
+
+public void setEndereco(String endereco) {
+    this.endereco = endereco;
+}
 }

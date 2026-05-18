@@ -56,7 +56,8 @@ public class SecurityConfig {
                                 "/",
                                 "/login",
                                 "/cadastro",
-                                "/logout"
+                                "/logout",
+                                 "/api/cep/**"
                         ).permitAll()
 
                         .requestMatchers(
